@@ -35,7 +35,7 @@ class BotMatterAlphaApplication(
         saveNewArticles(articles)
 
         log.info("Find unpublished articles")
-        val unpublishedArticles = articleRepository.findBotUnpublished().take(1)
+        val unpublishedArticles = articleRepository.findBotUnpublished()
 
         log.info("Found ${unpublishedArticles.size} unpublished articles")
         unpublishedArticles.forEach { article ->
