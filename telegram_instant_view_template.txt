@@ -1,0 +1,54 @@
+# This file is a source code for Telegram Instant View template. https://instantview.telegram.org/
+# Used to create instant views for https://www.matteralpha.com Articles.
+# Example: https://www.matteralpha.com/how-to/how-anyone-can-add-a-matter-device-to-ikea-home
+
+# Instant view documentation: https://instantview.telegram.org/guide
+# A custom template: https://gist.github.com/cor-bee/af5cb955ddf2e7d918b06b403b2b759e
+# Telegram chat: https://t.me/instantview_russian
+
+~version: "2.0"
+
+?path: /.+/.+
+!path_not: /author/.+
+
+site_name: "matter alpha"
+
+# All content is in the article block
+$main: //article
+
+# Set the main attributes
+title:          $main//h1
+author:         $main//address
+author_url:     $main//address/a/@href
+published_date: $main//time/@datetime
+body:           $main
+
+# Preview attributes
+image_url:      $main//figure/img/@src
+description:    $main//p
+
+
+# Transform all div nodes, with youtube player-id into iframe to be supported by the IV
+# Inspired by https://github.com/Sea-n/Telegram-IV-Templates/blob/85f50ea62bc575ad83e1873d5d2cee788e1cff44/2017/minecraft.net.xpath#L15
+<iframe>: //div[@data-frontend--youtube-player-video-id-value]
+@set_attr(src, "https://www.youtube.com/embed/", @data-frontend--youtube-player-video-id-value): $@
+
+# Fix layout
+@split_parent: //strong/img
+@split_parent: //p/img
+@split_parent: //a/img
+
+# Remove 'This page may contain affiliate links.'
+@remove: $main/div[1]
+# Remove 'Author details'
+@remove: $main/div[1]
+# Remove items
+@remove: //div[has-class("jewel-productcard")]
+# Remove share with social media block
+@remove: //aside
+# Remove about author block
+@remove: //div[has-class("transition-colors")]
+# Remove related articles block
+@remove: //div[has-class("article-products")]
+# remove comments block
+@remove: //div[@id="emote_com"]
